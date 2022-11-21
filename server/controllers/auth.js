@@ -1,7 +1,12 @@
 import bcrypt from 'bcrypt';
-import User from '../models/user.js';
+import User from '../models/User.js';
 
 /* ------------------ REGISTER ------------------ */
+/**
+ * @route /auth/register
+ * @desc Register user
+ * @access Public
+ */
 export const register = async (req, res) => {
     try {
         const { firstName, lastName, email, password, location, occupation, friends, picturePath } = req.body;
@@ -29,6 +34,14 @@ export const register = async (req, res) => {
 };
 
 // --------------------- LOGIN ---------------------
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @route /auth/login
+ * @desc Login user
+ * @access Public
+ */
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
