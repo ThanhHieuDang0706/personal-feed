@@ -22,21 +22,26 @@ const NavBar = () => {
     const fullName = `${user?.firstName || ''} ${user?.lastName || ''}`;
 
     return (
-        <FlexBetween padding='1rem 6%' backgroundColor={alt}>
+        <FlexBetween
+            padding='1rem 6%'
+            backgroundColor={alt}>
             <FlexBetween gap='1.75rem'>
                 <Typography
                     fontWeight='bold'
                     fontSize='clamp(1rem, 2rem, 2.25rem)'
-                    color='primary'
+                    color='primary's
                     onClick={() => navigate('/home')}
                     sx={{
                         '&:hover': { cursor: 'pointer', color: primaryLight }
-                    }}
-                >
+                    }}>
                     SocialPedia
                 </Typography>
                 {isNonMobileScreen && (
-                    <FlexBetween backgroundColor={neutralLight} borderRadius='9px' gap='3rem' padding='0.1rem 1.5rem'>
+                    <FlexBetween
+                        backgroundColor={neutralLight}
+                        borderRadius='9px'
+                        gap='3rem'
+                        padding='0.1rem 1.5rem'>
                         <InputBase placeholder='Search...' />
                         <IconButton>
                             <Search />
@@ -47,11 +52,15 @@ const NavBar = () => {
             {/* Desktop nav */}
             {isNonMobileScreen ? (
                 <FlexBetween gap='2rem'>
-                    <IconButton onClick={() => dispatch(setMode())}>{theme.palette.mode === 'dark' ? <DarkMode sx={{ fontSize: '25px' }} /> : <LightMode sx={{ fontSize: '25px', color: dark }} />}</IconButton>
+                    <IconButton onClick={() => dispatch(setMode())}>
+                        {theme.palette.mode === 'dark' ? <DarkMode sx={{ fontSize: '25px' }} /> : <LightMode sx={{ fontSize: '25px', color: dark }} />}
+                    </IconButton>
                     <Message sx={{ fontSize: '25px', color: dark }} />
                     <Notifications sx={{ fontSize: '25px', color: dark }} />
                     <Help sx={{ fontSize: '25px' }} />
-                    <FormControl variant='standard' value={fullName}>
+                    <FormControl
+                        variant='standard'
+                        value={fullName}>
                         <Select
                             value={fullName}
                             sx={{
@@ -67,13 +76,11 @@ const NavBar = () => {
                                     backgroundColor: neutralLight
                                 }
                             }}
-                            input={<InputBase />}
-                        >
+                            input={<InputBase />}>
                             <MenuItem value={fullName}>
                                 <Typography>{fullName}</Typography>
                             </MenuItem>
                             <MenuItem onClick={() => dispatch(setLogout)}>Log out</MenuItem>
-                            
                         </Select>
                     </FormControl>
                 </FlexBetween>
@@ -84,20 +91,40 @@ const NavBar = () => {
             )}
             {/* Mobile nav */}
             {!isNonMobileScreen && isMobileMenuToggled && (
-                <Box position='fixed' right='0' bottom='0' height='100%' zIndex='10' maxWidth='500px' minWidth='300px' backgroundColor={background}>
+                <Box
+                    position='fixed'
+                    right='0'
+                    bottom='0'
+                    height='100%'
+                    zIndex='10'
+                    maxWidth='500px'
+                    minWidth='300px'
+                    backgroundColor={background}>
                     {/* Close button */}
-                    <Box display='flex' justifyContent='flex-end' padding='1rem'>
+                    <Box
+                        display='flex'
+                        justifyContent='flex-end'
+                        padding='1rem'>
                         <IconButton onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}>
                             <Close />
                         </IconButton>
                     </Box>
                     {/* MENU ITEMS */}
-                    <FlexBetween display='flex' flexDirection='column' justifyContent='center' alignItems='center' gap='2rem'>
-                        <IconButton onClick={() => dispatch(setMode())}>{theme.palette.mode === 'dark' ? <DarkMode sx={{ fontSize: '25px' }} /> : <LightMode sx={{ fontSize: '25px', color: dark }} />}</IconButton>
+                    <FlexBetween
+                        display='flex'
+                        flexDirection='column'
+                        justifyContent='center'
+                        alignItems='center'
+                        gap='2rem'>
+                        <IconButton onClick={() => dispatch(setMode())}>
+                            {theme.palette.mode === 'dark' ? <DarkMode sx={{ fontSize: '25px' }} /> : <LightMode sx={{ fontSize: '25px', color: dark }} />}
+                        </IconButton>
                         <Message sx={{ fontSize: '25px', color: dark }} />
                         <Notifications sx={{ fontSize: '25px', color: dark }} />
                         <Help sx={{ fontSize: '25px' }} />
-                        <FormControl variant='standard' value={fullName}>
+                        <FormControl
+                            variant='standard'
+                            value={fullName}>
                             <Select
                                 value={fullName}
                                 sx={{
@@ -113,8 +140,7 @@ const NavBar = () => {
                                         backgroundColor: neutralLight
                                     }
                                 }}
-                                input={<InputBase />}
-                            >
+                                input={<InputBase />}>
                                 <MenuItem value={fullName}>
                                     <Typography>{fullName}</Typography>
                                 </MenuItem>
