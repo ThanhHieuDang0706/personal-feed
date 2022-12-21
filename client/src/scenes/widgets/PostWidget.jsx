@@ -23,6 +23,9 @@ const PostWidget = ({
   likes,
   comments,
 }) => {
+  console.log('====================================');
+  console.log(comments, postId);
+  console.log('====================================');
   const [isComments, setIsComments] = useState(false);
   const { palette } = useTheme();
   const dispatch = useDispatch();
@@ -85,7 +88,7 @@ const PostWidget = ({
 
       {isComments && (
         <Box mt="0.5rem">
-          {comments.map((comment, i) => (
+          {comments?.map((comment, i) => (
             <Box key={`${name}-${i}`}>
               <Divider />
               <Typography sx={{ color: main, m: '0.5rem 0', pl: '1rem' }}>{comment}</Typography>
