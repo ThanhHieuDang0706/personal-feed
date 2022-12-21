@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Box, Button, TextField, useMediaQuery, Typography, useTheme } from '@mui/material';
-import { EditOutlined } from '@mui/icons-material';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Formik } from 'formik';
+import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setLogin } from 'state';
 import Dropzone from 'react-dropzone';
 import FlexBetween from 'components/FlexBetween';
-import * as yup from 'yup';
 
 const registerSchema = yup.object().shape({
     firstName: yup.string().required('required'),
     lastName: yup.string().required('required'),
-    email: yup.string().email('invaid emaill').required('required'),
+    email: yup.string().email('invalid email').required('required'),
     password: yup.string().required('required'),
     location: yup.string().required('required'),
     occupation: yup.string().required('required'),
@@ -20,7 +20,7 @@ const registerSchema = yup.object().shape({
 });
 
 const loginSchema = yup.object().shape({
-    email: yup.string().email('invaid emaill').required('required'),
+    email: yup.string().email('invalid email').required('required'),
     password: yup.string().required('required')
 });
 
@@ -42,39 +42,40 @@ const initialValuesLogin = {
 const Form = () => {
     const [pageType, setPageType] = useState('login');
     const { palette } = useTheme();
-    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const isNonMobile = useMediaQuery('(min-width: 600px)');
+    const navigate = useNavigate();
+    const isNonMobile = useMediaQuery('(min-width:600px)');
     const isLogin = pageType === 'login';
     const isRegister = pageType === 'register';
 
     const register = async (values, onSubmitProps) => {
-        // Formdata to send form info with image
+        // this allows us to send form info with image
         const formData = new FormData();
-        for (const value in values) {
+        for (let value in values) {
             formData.append(value, values[value]);
         }
         formData.append('picturePath', values.picture.name);
-        const savedUserResposne = await fetch(`${process.env.BASE_API_URL}/auth/register`, {
+
+        const savedUserResponse = await fetch('http://localhost:3001/auth/register', {
             method: 'POST',
             body: formData
         });
-        const savedUser = await savedUserResposne.json();
+        const savedUser = await savedUserResponse.json();
         onSubmitProps.resetForm();
+
         if (savedUser) {
             setPageType('login');
         }
     };
 
     const login = async (values, onSubmitProps) => {
-        const loggedInResposne = await fetch(`${process.env.BASE_API_URL}/auth/login`, {
+        const loggedInResponse = await fetch('http://localhost:3001/auth/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(values)
         });
-        const loggedIn = loggedInResposne.json();
+        const loggedIn = await loggedInResponse.json();
+        onSubmitProps.resetForm();
         if (loggedIn) {
             dispatch(
                 setLogin({
@@ -82,17 +83,13 @@ const Form = () => {
                     token: loggedIn.token
                 })
             );
+            navigate('/home');
         }
-        navigate('/home');
     };
 
     const handleFormSubmit = async (values, onSubmitProps) => {
-        if (isLogin) {
-            await login(values, onSubmitProps);
-        }
-        if (isRegister) {
-            await register(values, onSubmitProps);
-        }
+        if (isLogin) await login(values, onSubmitProps);
+        if (isRegister) await register(values, onSubmitProps);
     };
 
     return (
@@ -105,16 +102,14 @@ const Form = () => {
                     <Box
                         display='grid'
                         gap='30px'
-                        gridTemplateColumns='repeat(4, minxmax(0, 1fr))'
+                        gridTemplateColumns='repeat(4, minmax(0, 1fr))'
                         sx={{
-                            '& > div': {
-                                gridColumn: isNonMobile ? undefined : 'span 4'
-                            }
+                            '& > div': { gridColumn: isNonMobile ? undefined : 'span 4' }
                         }}>
                         {isRegister && (
                             <>
                                 <TextField
-                                    label='First name'
+                                    label='First Name'
                                     onBlur={handleBlur}
                                     onChange={handleChange}
                                     value={values.firstName}
@@ -124,7 +119,7 @@ const Form = () => {
                                     sx={{ gridColumn: 'span 2' }}
                                 />
                                 <TextField
-                                    label='Last name'
+                                    label='Last Name'
                                     onBlur={handleBlur}
                                     onChange={handleChange}
                                     value={values.lastName}
@@ -159,25 +154,22 @@ const Form = () => {
                                     borderRadius='5px'
                                     p='1rem'>
                                     <Dropzone
-                                        acceptFiles='.jpeg,.jpg,.png'
+                                        acceptedFiles='.jpg,.jpeg,.png'
                                         multiple={false}
                                         onDrop={(acceptedFiles) => setFieldValue('picture', acceptedFiles[0])}>
                                         {({ getRootProps, getInputProps }) => (
                                             <Box
-                                                {...getRootProps}
+                                                {...getRootProps()}
                                                 border={`2px dashed ${palette.primary.main}`}
                                                 p='1rem'
-                                                sx={{
-                                                    '&:hover': {
-                                                        cursor: 'pointer'
-                                                    }
-                                                }}>
+                                                sx={{ '&:hover': { cursor: 'pointer' } }}>
                                                 <input {...getInputProps()} />
-                                                {!values.pictur ? (
-                                                    <p> Add picture here </p>
+                                                {!values.picture ? (
+                                                    <p>Add Picture Here</p>
                                                 ) : (
                                                     <FlexBetween>
                                                         <Typography>{values.picture.name}</Typography>
+                                                        <EditOutlinedIcon />
                                                     </FlexBetween>
                                                 )}
                                             </Box>
@@ -186,6 +178,7 @@ const Form = () => {
                                 </Box>
                             </>
                         )}
+
                         <TextField
                             label='Email'
                             onBlur={handleBlur}
@@ -209,7 +202,7 @@ const Form = () => {
                         />
                     </Box>
 
-                    {/* Buttons */}
+                    {/* BUTTONS */}
                     <Box>
                         <Button
                             fullWidth
@@ -219,11 +212,9 @@ const Form = () => {
                                 p: '1rem',
                                 backgroundColor: palette.primary.main,
                                 color: palette.background.alt,
-                                '&:hover': {
-                                    color: palette.primary.main
-                                }
+                                '&:hover': { color: palette.primary.main }
                             }}>
-                            {isLogin ? 'Login' : 'Register'}
+                            {isLogin ? 'LOGIN' : 'REGISTER'}
                         </Button>
                         <Typography
                             onClick={() => {
@@ -238,7 +229,7 @@ const Form = () => {
                                     color: palette.primary.light
                                 }
                             }}>
-                            {isLogin ? "Don't have an account? Sign up here!" : 'Already have an account? Sign in here!'}
+                            {isLogin ? "Don't have an account? Sign Up here." : 'Already have an account? Login here.'}
                         </Typography>
                     </Box>
                 </form>

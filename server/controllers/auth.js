@@ -35,9 +35,9 @@ export const register = async (req, res) => {
 
 // --------------------- LOGIN ---------------------
 /**
- * 
- * @param {*} req 
- * @param {*} res 
+ *
+ * @param {*} req
+ * @param {*} res
  * @route /auth/login
  * @desc Login user
  * @access Public
