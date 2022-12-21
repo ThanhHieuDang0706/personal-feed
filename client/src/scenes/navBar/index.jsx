@@ -21,8 +21,6 @@ const NavBar = () => {
   const alt = theme.palette.background.alt;
   const fullName = `${user?.firstName || ''} ${user?.lastName || ''}`;
 
-  console.log(user?.firstname, user?.lastname);
-
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
