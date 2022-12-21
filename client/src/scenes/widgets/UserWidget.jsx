@@ -17,7 +17,7 @@ const UserWidget = ({ userId, picturePath }) => {
   const main = palette.neutral.main;
 
   const getUser = async () => {
-    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${userId}`, {
+    const response = await fetch(`${process.env.REACT_APP_BASE_API_URL}/users/${userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -29,6 +29,7 @@ const UserWidget = ({ userId, picturePath }) => {
   };
 
   useEffect(() => {
+    console.log('user widget');
     getUser();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   if (!user) {
@@ -59,73 +60,75 @@ const UserWidget = ({ userId, picturePath }) => {
             </Typography>
             <Typography color={medium}>{friends.length} friends</Typography>
           </Box>
-          <ManageAccountsOutlined />
+        </FlexBetween>
+        <ManageAccountsOutlined />
+      </FlexBetween>
+
+      <Divider />
+      {/* Second row */}
+
+      <Box p="1rem 0">
+        <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
+          <LocationOnOutlined fontSize="large" sx={{ color: main }} />
+          <Typography color={medium}>{location}</Typography>
+        </Box>
+
+        <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
+          <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
+          <Typography color={medium}>{occupation}</Typography>
+        </Box>
+      </Box>
+      <Divider />
+      {/* 3rd row */}
+      <Box p="1rem 0">
+        <FlexBetween>
+          <Typography color={medium}>Who's viewed your profile?</Typography>
+          <Typography color={medium} fontWeight={500}>
+            {viewedProfile}
+          </Typography>
         </FlexBetween>
 
-        <Divider />
-        {/* Second row */}
-
-        <Box p="1rem 0">
-          <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-            <LocationOnOutlined fontSize="large" sx={{ color: main }} />
-            <Typography color={medium}>{location}</Typography>
-          </Box>
-
-          <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-            <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
-            <Typography color={medium}>{occupation}</Typography>
-          </Box>
-        </Box>
-
-        {/* 3rd row */}
-        <Box p="1rem 0">
-          <FlexBetween>
-            <Typography color={medium}>Who's viewed your profile?</Typography>
-            <Typography color={medium} fontWeight={500}>
-              {viewedProfile}
-            </Typography>
-          </FlexBetween>
-
-          <FlexBetween>
-            <Typography color={medium}>Impressions of your post</Typography>
-            <Typography color={medium} fontWeight={500}>
-              {impressions}
-            </Typography>
-          </FlexBetween>
-        </Box>
-
-        {/* 4th row */}
-        <Box p="1rem 0">
-          <Typography fontSize="1rem" color={main} fontWeight={500} mb="1rem">
-            Social Profiles
+        <FlexBetween>
+          <Typography color={medium}>Impressions of your post</Typography>
+          <Typography color={medium} fontWeight={500}>
+            {impressions}
           </Typography>
-          <FlexBetween gap="1rem" mb="0.5rem">
-            <FlexBetween gap="1rem">
-              <img src="../assets/twitter.png" alt="Twitter" />
-              <Box>
-                <Typography color={main} fontWeight={500}>
-                  Twitter
-                </Typography>
-                <Typography color={medium}>Social Networks</Typography>
-              </Box>
-            </FlexBetween>
-            <EditOutlined sx={{ color: main }} />
-          </FlexBetween>
-
+        </FlexBetween>
+      </Box>
+      <Divider />
+      {/* 4th row */}
+      <Box p="1rem 0">
+        <Typography fontSize="1rem" color={main} fontWeight={500} mb="1rem">
+          Social Profiles
+        </Typography>
+        <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
-            <FlexBetween gap="1rem">
-              <img src="../assets/linkedin.png" alt="linkedin" />
-              <Box>
-                <Typography color={main} fontWeight={500}>
-                  Linkedin
-                </Typography>
-                <Typography color={medium}>Network Platform</Typography>
-              </Box>
-            </FlexBetween>
-            <EditOutlined sx={{ color: main }} />
+            <img src="../assets/twitter.png" alt="Twitter" />
+            <Box>
+              <Typography color={main} fontWeight={500}>
+                Twitter
+              </Typography>
+              <Typography color={medium}>Social Networks</Typography>
+            </Box>
           </FlexBetween>
-        </Box>
-      </FlexBetween>
+          <EditOutlined sx={{ color: main }} />
+        </FlexBetween>
+
+        <FlexBetween gap="1rem">
+          <FlexBetween gap="1rem">
+            <img src="../assets/linkedin.png" alt="linkedin" />
+            <Box>
+              <Typography color={main} fontWeight={500}>
+                Linkedin
+              </Typography>
+              <Typography color={medium}>Network Platform</Typography>
+            </Box>
+          </FlexBetween>
+          <EditOutlined sx={{ color: main }} />
+        </FlexBetween>
+      </Box>
     </WidgetWrapper>
   );
 };
+
+export default UserWidget;
