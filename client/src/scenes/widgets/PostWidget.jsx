@@ -23,9 +23,6 @@ const PostWidget = ({
   likes,
   comments,
 }) => {
-  console.log('====================================');
-  console.log(comments, postId);
-  console.log('====================================');
   const [isComments, setIsComments] = useState(false);
   const { palette } = useTheme();
   const dispatch = useDispatch();
